@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,43 +7,49 @@
 <title>Para Nata ❤️</title>
 
 <style>
-html, body {
+body {
     margin: 0;
-    height: 100%;
     font-family: 'Segoe UI', sans-serif;
+    height: 100vh;
     overflow: hidden;
-    background: black;
 }
 
-/* CONTENEDOR DE FONDOS */
-#fondos {
+/* CAPA DE FONDO (AQUÍ VAN LAS FOTOS) */
+body::before {
+    content: "";
     position: fixed;
-    inset: 0;
-    z-index: -3;
-}
-
-.fondo {
-    position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    opacity: 0;
-    transition: opacity 3s ease-in-out;
-}
-
-.fondo.activo {
-    opacity: 1;
-}
-
-/* OSCURECER */
-#oscuro {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
+    background-repeat: no-repeat;
+    animation: fondo 80s infinite;
     z-index: -2;
 }
 
-/* CONTENIDO */
+/* CAPA OSCURA SUAVE */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: -1;
+}
+
+/* ANIMACIÓN SIN GRIS */
+@keyframes fondo {
+    0%   { background-image: url("./fotos/1.jpg"); }
+    10%  { background-image: url("./fotos/2.jpg"); }
+    20%  { background-image: url("./fotos/3.jpg"); }
+    30%  { background-image: url("./fotos/4.jpg"); }
+    40%  { background-image: url("./fotos/5.jpg"); }
+    50%  { background-image: url("./fotos/6.jpg"); }
+    60%  { background-image: url("./fotos/7.jpg"); }
+    70%  { background-image: url("./fotos/8.jpg"); }
+    80%  { background-image: url("./fotos/9.jpg"); }
+    90%  { background-image: url("./fotos/10.jpg"); }
+    100% { background-image: url("./fotos/1.jpg"); }
+}
+
 .overlay {
     height: 100vh;
     display: flex;
@@ -68,7 +76,6 @@ button {
     cursor: pointer;
 }
 
-/* CORAZONES */
 .heart {
     position: fixed;
     color: pink;
@@ -85,17 +92,13 @@ button {
 
 <body>
 
-<div id="fondos">
-    <div class="fondo activo" id="f1"></div>
-    <div class="fondo" id="f2"></div>
-</div>
-
-<div id="oscuro"></div>
-
 <div class="overlay">
     <div class="card" id="card">
         <h1>Nata ❤️</h1>
-        <p>Desde que llegaste a mi vida,<br>todo tiene más sentido.</p>
+        <p>
+            Desde que llegaste a mi vida,<br>
+            todo tiene más sentido.
+        </p>
         <h2>¿Quieres ser mi San Valentín? 🌹</h2>
         <button onclick="aceptar()">Sí 💖</button>
     </div>
@@ -109,80 +112,32 @@ allow="autoplay"></iframe>
 </div>
 
 <script>
-const fotos = [
- "fotos/1.jpg",
- "fotos/2.jpg",
- "fotos/3.jpg",
- "fotos/4.jpg",
- "fotos/5.jpg",
- "fotos/6.jpg",
- "fotos/7.jpg",
- "fotos/8.jpg",
- "fotos/9.jpg",
- "fotos/10.jpg"
-];
-
-let i = 0;
-let activo = true;
-
-const f1 = document.getElementById("f1");
-const f2 = document.getElementById("f2");
-
-/* PRE-CARGA */
-let cargadas = 0;
-fotos.forEach(src => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-        cargadas++;
-        if (cargadas === fotos.length) iniciar();
-    };
-});
-
-function iniciar() {
-    f1.style.backgroundImage = `url(${fotos[0]})`;
-
-    setInterval(() => {
-        i = (i + 1) % fotos.length;
-
-        if (activo) {
-            f2.style.backgroundImage = `url(${fotos[i]})`;
-            f2.classList.add("activo");
-            f1.classList.remove("activo");
-        } else {
-            f1.style.backgroundImage = `url(${fotos[i]})`;
-            f1.classList.add("activo");
-            f2.classList.remove("activo");
-        }
-        activo = !activo;
-    }, 8000);
+function aceptar(){
+document.getElementById("card").innerHTML = `
+<h1>💘 Hasta la muerte 💘</h1>
+<p>
+Nata, eres la única mujer<br>
+de la cual siempre voy a estar enamorado.<br><br>
+Cada latido de mi corazón lleva tu nombre.<br>
+Contigo hoy, mañana y siempre.
+</p>
+`;
+document.getElementById("music").style.display = "block";
 }
 
-function aceptar() {
-    document.getElementById("card").innerHTML = `
-    <h1>💘 Hasta la muerte 💘</h1>
-    <p>
-    Nata, eres la única mujer<br>
-    de la cual siempre voy a estar enamorado.<br><br>
-    Cada latido de mi corazón lleva tu nombre.<br>
-    Contigo hoy, mañana y siempre.
-    </p>
-    `;
-    document.getElementById("music").style.display = "block";
-}
-
-/* corazones */
-setInterval(() => {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = "❤️";
-    h.style.left = Math.random()*100 + "vw";
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 6000);
-}, 300);
+// corazones
+setInterval(()=>{
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),6000);
+},300);
 </script>
 
 </body>
 </html>
+
 
 
