@@ -14,29 +14,27 @@ html, body {
 }
 
 /* CONTENEDOR DE FONDOS */
-#background {
+#fondos {
     position: fixed;
     inset: 0;
     z-index: -3;
 }
 
-/* CAPAS */
-.bg {
+.fondo {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
     opacity: 0;
-    transition: opacity 2.5s ease-in-out;
+    transition: opacity 3s ease-in-out;
 }
 
-.bg.active {
+.fondo.activo {
     opacity: 1;
 }
 
-/* CAPA OSCURA */
-#dark {
+/* OSCURECER */
+#oscuro {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.55);
@@ -87,13 +85,12 @@ button {
 
 <body>
 
-<!-- FONDOS -->
-<div id="background">
-    <div class="bg active" id="bg1"></div>
-    <div class="bg" id="bg2"></div>
+<div id="fondos">
+    <div class="fondo activo" id="f1"></div>
+    <div class="fondo" id="f2"></div>
 </div>
 
-<div id="dark"></div>
+<div id="oscuro"></div>
 
 <div class="overlay">
     <div class="card" id="card">
@@ -113,57 +110,55 @@ allow="autoplay"></iframe>
 
 <script>
 const fotos = [
- "./fotos/1.jpg",
- "./fotos/2.jpg",
- "./fotos/3.jpg",
- "./fotos/4.jpg",
- "./fotos/5.jpg",
- "./fotos/6.jpg",
- "./fotos/7.jpg",
- "./fotos/8.jpg",
- "./fotos/9.jpg",
- "./fotos/10.jpg"
+ "fotos/1.jpg",
+ "fotos/2.jpg",
+ "fotos/3.jpg",
+ "fotos/4.jpg",
+ "fotos/5.jpg",
+ "fotos/6.jpg",
+ "fotos/7.jpg",
+ "fotos/8.jpg",
+ "fotos/9.jpg",
+ "fotos/10.jpg"
 ];
 
-let index = 0;
+let i = 0;
 let activo = true;
-let cargadas = [];
 
-const bg1 = document.getElementById("bg1");
-const bg2 = document.getElementById("bg2");
+const f1 = document.getElementById("f1");
+const f2 = document.getElementById("f2");
 
-/* PRE-CARGA TOTAL */
-let loaded = 0;
-fotos.forEach((src, i) => {
+/* PRE-CARGA */
+let cargadas = 0;
+fotos.forEach(src => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
-        cargadas[i] = src;
-        loaded++;
-        if (loaded === fotos.length) iniciar();
+        cargadas++;
+        if (cargadas === fotos.length) iniciar();
     };
 });
 
 function iniciar() {
-    bg1.style.backgroundImage = `url(${cargadas[0]})`;
+    f1.style.backgroundImage = `url(${fotos[0]})`;
 
     setInterval(() => {
-        index = (index + 1) % cargadas.length;
+        i = (i + 1) % fotos.length;
 
         if (activo) {
-            bg2.style.backgroundImage = `url(${cargadas[index]})`;
-            bg2.classList.add("active");
-            bg1.classList.remove("active");
+            f2.style.backgroundImage = `url(${fotos[i]})`;
+            f2.classList.add("activo");
+            f1.classList.remove("activo");
         } else {
-            bg1.style.backgroundImage = `url(${cargadas[index]})`;
-            bg1.classList.add("active");
-            bg2.classList.remove("active");
+            f1.style.backgroundImage = `url(${fotos[i]})`;
+            f1.classList.add("activo");
+            f2.classList.remove("activo");
         }
         activo = !activo;
-    }, 7000);
+    }, 8000);
 }
 
-function aceptar(){
+function aceptar() {
     document.getElementById("card").innerHTML = `
     <h1>💘 Hasta la muerte 💘</h1>
     <p>
@@ -177,15 +172,17 @@ function aceptar(){
 }
 
 /* corazones */
-setInterval(()=>{
-    let h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="❤️";
-    h.style.left=Math.random()*100+"vw";
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random()*100 + "vw";
     document.body.appendChild(h);
-    setTimeout(()=>h.remove(),6000);
-},300);
+    setTimeout(() => h.remove(), 6000);
+}, 300);
 </script>
 
 </body>
 </html>
+
+
